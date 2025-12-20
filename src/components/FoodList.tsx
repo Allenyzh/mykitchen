@@ -1,16 +1,19 @@
 import { FoodItem } from "@/db/schema";
 import { FoodItemCard } from "./FoodItemCard";
+import { SwipeableCard } from "./SwipeableCard";
 
 interface FoodListProps {
   items: FoodItem[];
   title?: string;
   onItemClick?: (item: FoodItem) => void;
+  onDelete?: (item: FoodItem) => void;
 }
 
 export const FoodList = ({
   items,
   title = "厨房清单",
   onItemClick,
+  onDelete,
 }: FoodListProps) => {
   return (
     <div className="space-y-3">
@@ -19,7 +22,9 @@ export const FoodList = ({
         <p className="text-gray-400 text-center py-10">清单还是空的，快去添加吧！</p>
       ) : (
         items.map((item) => (
-          <FoodItemCard key={item.id} item={item} onClick={onItemClick} />
+          <SwipeableCard key={item.id} onDelete={() => onDelete?.(item)}>
+            <FoodItemCard item={item} onClick={onItemClick} />
+          </SwipeableCard>
         ))
       )}
     </div>
