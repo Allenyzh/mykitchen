@@ -19,9 +19,14 @@ export const FoodItemCard = ({ item, onClick }: FoodItemCardProps) => {
         <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl">
           {categoryEmoji(item.category)}
         </div>
+
         <div>
-          <h3 className="font-bold text-gray-800">{item.name}</h3>
-          <p className="text-xs text-gray-500">剩余: {item.quantity} {item.unit}</p>
+          <div className="flex gap-2 justify-between items-center">
+            <h3 className="font-bold text-gray-800">{item.name}</h3>
+            {item.notes ? <p className="text-xs font-bold text-emerald-600">{item.notes}</p> : null}
+          </div>
+
+          <p className="text-xs text-gray-500 inline-flex item-center">剩余: {item.weight ? item.weight + item.unit + " | " + item.quantity + "包/袋/盒" : item.quantity + item.unit}</p>
         </div>
       </div>
 

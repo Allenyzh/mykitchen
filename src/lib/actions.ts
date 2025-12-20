@@ -51,3 +51,26 @@ export async function deleteFoodItem(id: number) {
         return { success: false, error: "删除失败" };
     }
 }
+
+export async function updateFoodItem(id: number, data: any) {
+    try {
+        await db.update(foodItems).set({
+            name: data.name,
+            quantity: Number(data.quantity),
+            unit: data.unit || "个",
+            weight: data.weight ? Number(data.weight) : null,
+            expiry_date: data.expiryDate,
+            category: data.category || "Other",
+            purchase_location: data.purchaseLocation,
+            total_price: data.totalPrice ? Number(data.totalPrice) : 0,
+            barcode: data.barcode,
+            notes: data.notes,
+            updated_at: new Date(),
+        }).where(eq(foodItems.id, id));
+        revalidatePath("/");
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to update food item:", error);
+        return { success: false, error: "更新失败" };
+    }
+}

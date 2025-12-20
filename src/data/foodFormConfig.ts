@@ -62,6 +62,17 @@ export const foodFormConfig: FormConfig = {
             placeholder: '请输入条形码',
         },
         {
+            name: "category",
+            label: "分类",
+            type: "select",
+            options: [
+                { label: "冷藏", value: "fridge" },
+                { label: "冷冻", value: "frozen" },
+                { label: "常温", value: "normal" },
+            ],
+            validation: { required: true },
+        },
+        {
             name: "notes",
             label: "备注",
             type: "textarea",

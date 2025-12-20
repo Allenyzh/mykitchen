@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { ActionButtons, SearchBar, FoodList } from "@/components";
-import { addFoodItem } from "@/lib/actions";
+import { FoodItemSheet } from "@/components/FoodItemSheet";
+import { addFoodItem, updateFoodItem } from "@/lib/actions";
+import { FoodItem } from "@/db/schema";
 
-export function ClientHome({ initialItems }: { initialItems: any[] }) {
+export function ClientHome({ initialItems }: { initialItems: FoodItem[] }) {
     const [searchTerm, setSearchTerm] = useState("");
+    const [editingItem, setEditingItem] = useState<FoodItem | null>(null);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     const handleScan = () => {
         console.log("打开扫码器");
@@ -18,8 +22,18 @@ export function ClientHome({ initialItems }: { initialItems: any[] }) {
         }
     };
 
-    const handleItemClick = (item: any) => {
-        console.log("点击了食品:", item);
+    const handleItemClick = (item: FoodItem) => {
+        setEditingItem(item);
+        setIsEditOpen(true);
+    };
+
+    const handleUpdate = async (data: Record<string, unknown>) => {
+        if (!editingItem) return;
+        const result = await updateFoodItem(editingItem.id, data);
+        if (!result.success) {
+            alert(result.error);
+        }
+        setEditingItem(null);
     };
 
     const filteredItems = initialItems.filter((item) =>
@@ -36,6 +50,15 @@ export function ClientHome({ initialItems }: { initialItems: any[] }) {
                 <SearchBar value={searchTerm} onChange={setSearchTerm} />
                 <FoodList items={filteredItems} onItemClick={handleItemClick} />
             </div>
+
+            {/* 编辑弹窗 */}
+            <FoodItemSheet
+                mode="edit"
+                open={isEditOpen}
+                onOpenChange={setIsEditOpen}
+                initialData={editingItem}
+                onSubmit={handleUpdate}
+            />
         </div>
     );
 }

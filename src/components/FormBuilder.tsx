@@ -81,6 +81,8 @@ const renderField = (
       newValue = e.target.value === "" ? undefined : parseFloat(e.target.value);
     } else if (type === "checkbox") {
       newValue = (e.target as HTMLInputElement).checked;
+    } else if (type === "date" && newValue) {
+      newValue = `${newValue}T23:59:59`;
     }
 
     onChange(field.name, newValue);
@@ -195,7 +197,7 @@ const renderField = (
           id={field.name}
           name={field.name}
           type="date"
-          value={(value as string) ?? ""}
+          value={(value as string)?.split("T")[0] ?? ""}
           onChange={handleChange}
           disabled={field.disabled}
           required={isRequired}
