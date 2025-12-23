@@ -74,7 +74,7 @@ export const foodFormConfig: FormConfig = {
         },
         {
             name: "notes",
-            label: "备注",
+            label: "备注/存放位置",
             type: "textarea",
             placeholder: "请输入备注信息",
             rows: 3,
